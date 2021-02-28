@@ -9,7 +9,7 @@
 | Professor | Andrew Forward, aforward@uottawa.ca |
 | TA | Kalonji Kalala, hkalo081@uottawa.ca |
 | TA | Lintian Wang, lwang263@uottawa.ca |
-| Team | Andrew Forward 1484511<br>Ayana Forward 9021000 |
+| Team | Mohamed Konate |
 
 ## Deliverables
 
@@ -55,8 +55,13 @@ CREATE TABLE athletes (
   modified timestamp,
   name varchar(50),
   dob date,
-  identified_gender varchar(6),
+  gender varchar(6),
   PRIMARY KEY (id)
+);
+CREATE TABLE schema_migrations (
+migration varchar(255),
+migrated_at time,
+PRIMARY KEY (migration)
 );
 ```
 
@@ -66,12 +71,17 @@ After running the above schema, you can test the queries below in the [Online SQ
 Refresh the browser if you want to start over.
 
 ```sql
-INSERT INTO athletes (id, name, identified_gender, dob)
+INSERT INTO athletes (id, name, gender, dob)
 VALUES
 (1, 'Andrew', 'm', '1986-12-01'),
 (2, 'Ayana', 'F', '1998-06-11'),
 (3, 'Hayden', 'm', '1996-07-24'),
 (4, 'August', 'm', '1999-09-09');
+
+INSERT INTO schema_migrations (migration, migrated_at) VALUES
+('20200228145526-create-athletes.sql', '2020-02-28 14:55:26');
+INSERT INTO schema_migrations (migration, migrated_at) VALUES
+('20200228145900-create-migrations.sql', '2020-02-28 14:59:00');
 ```
 
 Let's find all 'F' athletes.
@@ -79,15 +89,15 @@ Let's find all 'F' athletes.
 ```sql
 SELECT *
 FROM athletes
-WHERE identified_gender = 'F';
+WHERE gender = 'F';
 ```
 
 Let's update all 'm's to 'M's.
 
 ```sql
 UPDATE athletes
-SET identified_gender = 'M'
-WHERE identified_gender = 'm';
+SET gender = 'M'
+WHERE gender = 'm';
 ```
 
 And now all 'M' athletes.
@@ -95,7 +105,7 @@ And now all 'M' athletes.
 ```sql
 SELECT *
 FROM athletes
-WHERE identified_gender = 'M';
+WHERE gender = 'M';
 ```
 
 Let's delete all athletes.
